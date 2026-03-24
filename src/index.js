@@ -3,7 +3,7 @@ import { createServer } from 'node:http';
 const bwipjs = require('bwip-js');
 
 const server = createServer(async (req, res) => {
-  const url = new URL(req.url, `http://localhost`);
+  const url = new URL(req.url, 'http://localhost');
   const id = url.searchParams.get('id');
 
   if (!id) {
