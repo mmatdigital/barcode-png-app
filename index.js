@@ -1,4 +1,4 @@
-import { toBuffer } from 'bwip-js';
+import bwipjs from '@bwip-js/node';
 
 export default {
   async fetch(request, env, ctx) {
@@ -24,7 +24,7 @@ export default {
     }
 
     try {
-      const png = await toBuffer({
+      const png = await bwipjs.toBuffer({
         bcid: 'code128',
         text: id,
         scale: 3,
