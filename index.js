@@ -13,7 +13,8 @@ export default {
         textxalign: 'center',
       });
     }
-
+  }
+}
     if (request.method !== 'GET') {
       return new Response('Method not allowed', { status: 405 });
     }
