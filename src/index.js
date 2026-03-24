@@ -30,4 +30,5 @@ const server = createServer(async (req, res) => {
   }
 });
 
+// This is the event handler binding:
 export default handleAsNodeRequest(server);
