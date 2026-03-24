@@ -1,5 +1,5 @@
 import { Buffer } from 'node:buffer';
-const bwipjs = require('bwip-js');
+import bwipjs from 'bwip-js';
 
 export default {
   async fetch(request, env, ctx) {
