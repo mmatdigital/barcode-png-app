@@ -1,16 +1,16 @@
-import bwipjs from 'bwip-js';
+import { toBuffer } from 'bwip-js';
 
 export default {
   async fetch(request, env, ctx) {
-    const url = new URL(request.url);
-
-    if (request.method === 'OPTIONS') {
-      return new Response(null, {
-        status: 204,
-        headers: {
-          'Access-Control-Allow-Origin': '*',
-          'Access-Control-Allow-Methods': 'GET, OPTIONS',
-        }
+    // ...
+    try {
+      const png = await toBuffer({
+        bcid: 'code128',
+        text: id,
+        scale: 3,
+        height: 10,
+        includetext: true,
+        textxalign: 'center',
       });
     }
 
