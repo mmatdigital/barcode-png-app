@@ -2,19 +2,18 @@ import { toBuffer } from 'bwip-js';
 
 export default {
   async fetch(request, env, ctx) {
-    // ...
-    try {
-      const png = await toBuffer({
-        bcid: 'code128',
-        text: id,
-        scale: 3,
-        height: 10,
-        includetext: true,
-        textxalign: 'center',
+    const url = new URL(request.url);
+
+    if (request.method === 'OPTIONS') {
+      return new Response(null, {
+        status: 204,
+        headers: {
+          'Access-Control-Allow-Origin': '*',
+          'Access-Control-Allow-Methods': 'GET, OPTIONS',
+        }
       });
     }
-  }
-}
+
     if (request.method !== 'GET') {
       return new Response('Method not allowed', { status: 405 });
     }
@@ -25,7 +24,7 @@ export default {
     }
 
     try {
-      const png = await bwipjs.toBuffer({
+      const png = await toBuffer({
         bcid: 'code128',
         text: id,
         scale: 3,
