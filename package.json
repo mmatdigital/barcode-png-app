@@ -1,0 +1,12 @@
+{
+  "name": "barcode-png-app",
+  "version": "1.0.0",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "wrangler dev",
+    "deploy": "wrangler deploy"
+  },
+  "dependencies": {
+    "bwip-js": "^4.5.0"
+  }
+}
