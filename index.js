@@ -1,4 +1,4 @@
-import { Buffer } from 'node:buffer';
+
 import bwipjs from 'bwip-js';
 
 export default {
