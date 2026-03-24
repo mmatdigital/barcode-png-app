@@ -1,33 +1,42 @@
-import { handleAsNodeRequest } from 'cloudflare:node';
-import { createServer } from 'node:http';
+import { Buffer } from 'node:buffer';
 const bwipjs = require('bwip-js');
 
-const server = createServer(async (req, res) => {
-  const url = new URL(req.url, 'http://localhost');
-  const id = url.searchParams.get('id');
+export default {
+  async fetch(request, env, ctx) {
+    const url = new URL(request.url);
+    const id = url.searchParams.get('id');
 
-  if (!id) {
-    res.writeHead(400, { 'Content-Type': 'text/plain' });
-    return res.end('Missing id');
+    if (!id) {
+      return new Response('Missing id', {
+        status: 400,
+        headers: { 'Content-Type': 'text/plain' }
+      });
+    }
+
+    try {
+      const png = await bwipjs.toBuffer({
+        bcid: 'code128',
+        text: id,
+        scale: 3,
+        height: 10,
+        includetext: true,
+        textxalign: 'center',
+      });
+
+      const bytes = png instanceof Uint8Array
+        ? png
+        : new Uint8Array(png);
+
+      return new Response(bytes, {
+        status: 200,
+        headers: { 'Content-Type': 'image/png' }
+      });
+    } catch (err) {
+      console.error('Error generating barcode PNG:', err);
+      return new Response(
+        'Error generating barcode: ' + (err.message || err),
+        { status: 500, headers: { 'Content-Type': 'text/plain' } }
+      );
+    }
   }
-
-  try {
-    const png = await bwipjs.toBuffer({
-      bcid: 'code128',
-      text: id,
-      scale: 3,
-      height: 10,
-      includetext: true,
-      textxalign: 'center',
-    });
-
-    res.writeHead(200, { 'Content-Type': 'image/png' });
-    res.end(png);
-  } catch (err) {
-    console.error('Error generating barcode PNG:', err);
-    res.writeHead(500, { 'Content-Type': 'text/plain' });
-    res.end('Error generating barcode');
-  }
-});
-
-export default handleAsNodeRequest(server);
+};
